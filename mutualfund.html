@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mutual Fund</title>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid #000000;
+            padding: 8px;
+            text-align: left;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Mutual Fund Scheme </h2>
+
+    <form onsubmit="scheme(); return false;">
+        Enter Mutual Fund Scheme Code:
+        <input type="text" placeholder="Scheme Code" id="schemeInput" required />
+        <br />
+        <button type="submit">Find Scheme</button>
+    </form>
+
+    <div id="container"></div>
+
+    <script>
+        async function scheme() {
+            const schemeInput = document.getElementById("schemeInput").value.trim();
+
+            if (!schemeInput) {
+                alert("Please enter a valid scheme code.");
+                return;
+            }
+
+            const url = `https://api.mfapi.in/mf/${schemeInput}`;
+
+            try {
+                const response = await fetch(url);
+
+                const data = await response.json();
+
+                if (!data || !data.meta || !data.meta.scheme_name) {
+                    throw new Error("Scheme not found");
+                }
+
+                const schemeName = data.meta.scheme_name;
+
+                const container = document.getElementById("container");
+                const schemeHtml = `
+                    <h3>Scheme Details</h3>
+                    <table>
+                        <tr><th>Scheme Code</th><th>Scheme Name</th></tr>
+                        <tr><td>${schemeInput}</td><td>${schemeName}</td></tr>
+                    </table>
+                `;
+                container.innerHTML = schemeHtml;
+            } catch (error) {
+                console.error("Error fetching and parsing data", error);
+                const container = document.getElementById("container");
+                container.innerHTML = `<p style="color: red;">${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+
+</html>
