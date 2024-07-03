@@ -1,0 +1,2 @@
+# Mutual-fund-api
+This project is a simple web application that allows users to enter a mutual fund scheme code and retrieve the scheme details using the MFAPI. The application is built using HTML, CSS, and JavaScript. Users can input a mutual fund scheme code, and upon submission, the app fetches and displays the corresponding scheme details in a tabular format. If the scheme code is invalid or not found, an error message is displayed.
